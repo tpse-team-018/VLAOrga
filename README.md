@@ -4,3 +4,7 @@ Dashboard web application for Organization of the Vorlesungsassistenz Physik, TU
 ## Setup
 
 Setup instructions can be found in the [Documentation](./docs/setup.md).
+
+## Team 018
+
+Lokales Setup mit Linus-Dump: siehe [docs/setup-team018.md](./docs/setup-team018.md).
