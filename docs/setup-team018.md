@@ -17,8 +17,8 @@ Diese Anleitung beschreibt Schritt für Schritt, wie man VLAOrga zusammen mit ei
 - **VLAOrga** ist der Kalender der Vorlesungsassistenz. Eigene Daten (Termine, Notizen, Benutzer) speichert es in PostgreSQL.
 - **Linus** ist die Versuchsdatenbank (Versuche, Buchungen). VLAOrga liest daraus **nur**. Lokal ersetzen wir Linus durch eine MariaDB, in die wir einen Dump (eine Sicherungskopie als `.sql`-Datei) einspielen.
 - Java, PostgreSQL und MariaDB muss man **nicht** selbst installieren: Das erledigt Docker.
-- Solange die VM des IAP noch nicht bereitsteht, läuft alles lokal. Auf der VM werden später dieselben Container gestartet.
-
+- - Diese Anleitung beschreibt die **Entwicklungsumgebung** (`docker-compose.yml`, Frontend über den Vite-Entwicklungsserver, lokale Linus-Kopie). Auf der VM des IAP soll später die **Produktionskonfiguration** laufen (`docker-compose.prod.yml`, Frontend im Backend-Container, Verbindung zur echten Linus-Datenbank), siehe `docs/setup.md`.
+- Allgemeine Details zur Entwicklungsumgebung des Vorgängerteams: siehe `docs/setup-development.md`. Diese Anleitung ergänzt sie um das Einspielen des Linus-Dumps und unsere Erfahrungen.
 ## 0. Voraussetzungen installieren
 
 | Programm | macOS | Windows | Linux |
