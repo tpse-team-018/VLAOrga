@@ -2,8 +2,8 @@
 
 Diese Anleitung beschreibt Schritt für Schritt, wie man VLAOrga zusammen mit einer lokalen Kopie der Versuchsdatenbank **Linus** baut und startet.
 
-> **Getestet:** am 17.11.2026 auf macOS (Apple Silicon, M1) mit Docker Desktop und VS Code.
-> **Nicht getestet:** Windows und Linux. Die Hinweise dafür sind sorgfältig zusammengestellt, aber noch nicht ausprobiert. Wer es dort durchspielt, ergänzt bitte diese Datei.
+> **Getestet:** am 17.11.2026 auf macOS (Apple Silicon, M1) und Windows, jeweils mit Docker Desktop und VS Code.
+> **Nicht getestet:** Linux. Die Hinweise dafür sind sorgfältig zusammengestellt, aber noch nicht ausprobiert. Wer es dort durchspielt, ergänzt bitte diese Datei.
 
 ## Überblick: was läuft wo?
 
@@ -17,8 +17,9 @@ Diese Anleitung beschreibt Schritt für Schritt, wie man VLAOrga zusammen mit ei
 - **VLAOrga** ist der Kalender der Vorlesungsassistenz. Eigene Daten (Termine, Notizen, Benutzer) speichert es in PostgreSQL.
 - **Linus** ist die Versuchsdatenbank (Versuche, Buchungen). VLAOrga liest daraus **nur**. Lokal ersetzen wir Linus durch eine MariaDB, in die wir einen Dump (eine Sicherungskopie als `.sql`-Datei) einspielen.
 - Java, PostgreSQL und MariaDB muss man **nicht** selbst installieren: Das erledigt Docker.
-- - Diese Anleitung beschreibt die **Entwicklungsumgebung** (`docker-compose.yml`, Frontend über den Vite-Entwicklungsserver, lokale Linus-Kopie). Auf der VM des IAP soll später die **Produktionskonfiguration** laufen (`docker-compose.prod.yml`, Frontend im Backend-Container, Verbindung zur echten Linus-Datenbank), siehe `docs/setup.md`.
+- Diese Anleitung beschreibt die **Entwicklungsumgebung** (`docker-compose.yml`, Frontend über den Vite-Entwicklungsserver, lokale Linus-Kopie). Auf der VM des IAP soll später die **Produktionskonfiguration** laufen (`docker-compose.prod.yml`, Frontend im Backend-Container, Verbindung zur echten Linus-Datenbank), siehe `docs/setup.md`.
 - Allgemeine Details zur Entwicklungsumgebung des Vorgängerteams: siehe `docs/setup-development.md`. Diese Anleitung ergänzt sie um das Einspielen des Linus-Dumps und unsere Erfahrungen.
+
 ## 0. Voraussetzungen installieren
 
 | Programm | macOS | Windows | Linux |
@@ -40,7 +41,7 @@ npm --version
 
 Jeder Befehl muss eine Versionsnummer ausgeben. **Docker Desktop muss gestartet sein** (Wal-Symbol in der Menüleiste bzw. Taskleiste), sonst schlagen alle `docker`-Befehle fehl.
 
-Außerdem braucht man den **Linus-Dump** (`dump.sql`). Wir nutzen den Dump vom 11.06.2025 der aktuellen Linus-Version (Django, Tabelle `accounts_user`) aus der Datensicherung des AG. Er enthält **echte personenbezogene Daten**, liegt deshalb **nicht** im Repository und wird nur teamintern über die Hessenbox weitergegeben. Bitte nirgendwo öffentlich ablegen oder weiterverteilen.
+Außerdem braucht man den **Linus-Dump** (`dump.sql`). Wir nutzen den Dump vom 10.03.2026 der aktuellen Linus-Version (Django, Tabelle `accounts_user`) aus der Datensicherung des AG (Ordner `g15_16/datenbank-physik`). Er enthält **echte personenbezogene Daten**, liegt deshalb **nicht** im Repository und wird nur teamintern über die Hessenbox weitergegeben. Bitte nirgendwo öffentlich ablegen oder weiterverteilen.
 
 ## Wo gebe ich die Befehle ein?
 
@@ -180,12 +181,12 @@ Nach dem Login im selben Browser öffnen:
 
 Es erscheint ein Versuch aus der Linus-Datenbank als JSON (Text mit Name, Beschreibung usw.). Damit ist gezeigt: VLAOrga liest Daten aus Linus.
 
-Im Kalender öffnet der Knopf **„Linus“** die „Linus Terminzuordnung“. Sie zeigt nur Linus-Buchungen **ab heute**. Da der Dump von Juni 2025 ist, ist die Liste dort zunächst leer. Das ist kein Fehler.
+Im Kalender öffnet der Knopf **„Linus“** die „Linus Terminzuordnung“. Sie zeigt nur Linus-Buchungen **ab heute**. Da der Dump vom März 2026 ist (letzte Buchung 12.03.2026), ist die Liste dort zunächst leer. Das ist kein Fehler.
 
 **Optional, nur zum lokalen Testen:** Die Buchungsdaten in der **lokalen Kopie** in die Zukunft verschieben (ändert nichts an der echten Linus-Datenbank):
 
 ```bash
-docker exec vlaorga-linus-db-1 mysql -u db_user -pdb_password db_name -e "UPDATE reservation SET lecture_date = lecture_date + INTERVAL 75 WEEK;"
+docker exec vlaorga-linus-db-1 mysql -u db_user -pdb_password db_name -e "UPDATE reservation SET lecture_date = lecture_date + INTERVAL 36 WEEK;"
 ```
 
 Danach im Kalender „Linus“ öffnen: Es erscheinen Linus-Buchungen der nächsten Tage. Rückgängig machen: Dump erneut einspielen (Schritt 3).
